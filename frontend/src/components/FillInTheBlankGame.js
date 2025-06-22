@@ -8,11 +8,10 @@ function FillInTheBlankGame({ questionData, onComplete }) {
     const [isCorrect, setIsCorrect] = useState(null);
     const { frase, opcoes, respostaCorreta } = questionData.dados;
 
-    // 2. Este useEffect reinicia o estado do componente a cada nova pergunta.
     useEffect(() => {
         setSelectedWord(null);
         setIsCorrect(null);
-    }, [questionData]); // A dependência [questionData] garante que isso aconteça sempre que a pergunta mudar.
+    }, [questionData]);
 
     const handleOptionClick = (word) => {
         if (isCorrect !== null) return;

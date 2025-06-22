@@ -8,7 +8,7 @@ function InterestPage() {
     const [selection, setSelection] = useState('');
     const navigate = useNavigate();
     
-    // Peguei as opções do protótipo [Teste de Software - IMMERSE ME.pdf, p. 35]
+    // prototipo [teste de software - immerse-me.pdf, p. 35]
     const options = ["Viagem", "Arte", "Comida", "Livros"];
 
     const handleContinue = async () => {
@@ -22,7 +22,6 @@ function InterestPage() {
                 },
                 body: JSON.stringify({ interesse: selection }),
             });
-            // Navega para a próxima etapa do onboarding
             navigate('/onboarding/level'); 
         } catch (error) {
             console.error("Erro ao salvar interesse:", error);
@@ -54,5 +53,4 @@ function InterestPage() {
     );
 }
 
-// A linha mais importante é esta: garantir que o componente seja exportado corretamente
 export default InterestPage;

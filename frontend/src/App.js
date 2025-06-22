@@ -3,7 +3,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
-// Importe os componentes
+// componentes
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
@@ -15,13 +15,13 @@ import LanguageSelectionPage from './pages/LanguageSelectionPage';
 import LessonMapPage from './pages/LessonMapPage';
 import LessonPage from './pages/LessonPage';
 import LessonResultsPage from './pages/LessonResultsPage';
-import ProgressPage from './pages/ProgressPage'; // <-- ESTA É A LINHA QUE FALTAVA
+import ProgressPage from './pages/ProgressPage';
 import VideoCallPage from './pages/VideoCallPage';
 
 import mascoteImg from './assets/mascote.png';
 import './App.css';
 
-// Componente para a página inicial (tela de boas-vindas)
+// pagina inicial
 function HomePage() {
     const navigate = useNavigate();
     return (
@@ -47,7 +47,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* --- Rotas Públicas --- */}
+        {/* --- rotas publicas --- */}
         <Route path="/" element={<HomePage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -56,7 +56,7 @@ function App() {
         <Route path="/lesson/:lessonId" element={<LessonPage />} />
         <Route path="/lesson-results/:score" element={<LessonResultsPage />} />
 
-        {/* --- Rotas Protegidas (Exigem Login) --- */}
+        {/* --- rotas rrotegidas (faça Login) --- */}
         <Route
           path="/dashboard"
           element={<ProtectedRoute><DashboardPage /></ProtectedRoute>}

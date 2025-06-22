@@ -1,6 +1,6 @@
 -- backend/schema.sql
 
--- Tabela para guardar informações dos usuários
+-- tabela para guardar informacoes dos usuarios
 CREATE TABLE IF NOT EXISTS Usuarios (
     idUsuario INTEGER PRIMARY KEY AUTOINCREMENT,
     nomeUsuario VARCHAR(80) NOT NULL,
@@ -8,23 +8,22 @@ CREATE TABLE IF NOT EXISTS Usuarios (
     senha TEXT NOT NULL,
     paisOrigem VARCHAR(45),
     fotoPerfil VARCHAR(255) DEFAULT 'default_avatar.png',
-    -- Campos de Onboarding Adicionados --
     objetivo VARCHAR(50),
     interesse VARCHAR(50),
     nivelProficiencia VARCHAR(50)
 );
 
--- Tabela para lições e minijogos
+-- tabela para licoes
 CREATE TABLE IF NOT EXISTS Licoes (
     idLicao INTEGER PRIMARY KEY AUTOINCREMENT,
     idioma VARCHAR(45) NOT NULL,
     nome TEXT NOT NULL,
     ordem INTEGER,
-    tipo VARCHAR(50), -- Ex: 'multipla_escolha_img', 'preencher_lacuna'
+    tipo VARCHAR(50),
     categoria VARCHAR(50)
 );
 
--- Tabela para guardar o progresso dos usuários nas lições
+-- tabela para guardar o progresso dos usuarios nas licoes
 CREATE TABLE IF NOT EXISTS ProgressoUsuario (
     idProgresso INTEGER PRIMARY KEY AUTOINCREMENT,
     idUsuario INTEGER NOT NULL,
@@ -35,11 +34,11 @@ CREATE TABLE IF NOT EXISTS ProgressoUsuario (
     FOREIGN KEY (idLicao) REFERENCES Licoes (idLicao) ON DELETE CASCADE
 );
 
--- Tabela para as perguntas dos minijogos (Exemplo)
+-- tabela para as perguntas dos minijogos (exemplo)
 CREATE TABLE IF NOT EXISTS Perguntas (
     idPergunta INTEGER PRIMARY KEY AUTOINCREMENT,
     idLicao INTEGER NOT NULL,
-    tipoPergunta VARCHAR(50), -- 'imagem_texto', 'texto_imagem', 'preencher_lacuna'
-    dadosPergunta TEXT, -- JSON com os dados: { "imagem": "cat.png", "opcoes": ["gato", "cachorro"], "resposta": "gato" }
+    tipoPergunta VARCHAR(50),
+    dadosPergunta TEXT,
     FOREIGN KEY (idLicao) REFERENCES Licoes (idLicao) ON DELETE CASCADE
 );

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import EditProfileModal from '../components/EditProfileModal';
 import './DashboardPage.css';
 
-// --- COMPONENTE DE RECOMPENSAS (sem alterações) ---
+// --- RECOMPENSAS ---
 const rewards = [
     { level: 'Novato', points: 0, icon: 'novato.png' },
     { level: 'Aprendiz', points: 100, icon: 'aprendiz.png' },
@@ -57,7 +57,6 @@ function RewardsSection({ user, onProfileUpdate }) {
         </div>
     );
 }
-// --- FIM DO COMPONENTE DE RECOMPENSAS ---
 
 function DashboardPage() {
     const [user, setUser] = useState(null);
@@ -105,8 +104,8 @@ function DashboardPage() {
         <>
             <div className="dashboard-container">
                 <div className="profile-card">
-                    {/* ===== INÍCIO DA ALTERAÇÃO ===== */}
-                    {/* Botão para iniciar a chamada de vídeo */}
+                    {/* ===== chamada de video ===== */}
+                    {/* botao para iniciar a chamada de video */}
                     <button 
                         className="video-call-button" 
                         title="Iniciar Chamada de Vídeo" 
@@ -114,7 +113,7 @@ function DashboardPage() {
                     >
                         🎥
                     </button>
-                    {/* ===== FIM DA ALTERAÇÃO ===== */}
+                    {/* ===== cabosi ===== */}
                     
                     <img src={`/assets/${user.fotoPerfil || 'rewards/novato.png'}`} alt="Foto do Perfil" className="profile-picture" />
                     <h2>{user.nomeUsuario}</h2>

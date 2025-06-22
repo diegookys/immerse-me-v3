@@ -32,14 +32,14 @@ function LessonPage() {
     }, [lessonId]);
 
     const handleComplete = async (isCorrect) => {
-        // Calcula a pontuação final da lição
+        // calcula a pontuação final da lição
         const finalScore = isCorrect ? score + 10 : score;
 
-        // Verifica se é a última questão
+        // verifica se é a última questão
         if (currentIndex >= questions.length - 1) {
             const token = localStorage.getItem('token');
             
-            // Tenta salvar o progresso se o usuário estiver logado
+            // tenta salvar o progresso se o usuário estiver logado
             if (token) {
                 try {
                     await fetch('http://localhost:3001/api/progress/complete', {
@@ -55,11 +55,9 @@ function LessonPage() {
                 }
             }
             
-            // CORREÇÃO: Navega para a tela de resultados APÓS todas as operações
             navigate(`/lesson-results/${finalScore}`);
-        } else {
-            // Se não for a última, atualiza a pontuação e avança
-            if(isCorrect) {
+        } else{
+            if(isCorrect){
                 setScore(finalScore);
             }
             setCurrentIndex(prev => prev + 1);

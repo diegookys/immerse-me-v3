@@ -9,7 +9,7 @@ const authMiddleware = require('../middleware/auth.js');
 
 const JWT_SECRET = 'seu_segredo_super_secreto_para_jwt';
 
-// ROTA DE CADASTRO (COM DESBLOQUEIO)
+// ROTA DE CADASTRO
 router.post('/register', async (req, res) => {
     try {
         const { nomeUsuario, email, senha } = req.body;
@@ -61,7 +61,7 @@ router.post('/login', (req, res) => {
     });
 });
 
-// ROTA DE PERFIL (GET) - Garante que a pontuação seja retornada
+// ROTA DE PERFIL (GET)
 router.get('/profile', authMiddleware, (req, res) => {
     const userId = req.user.id;
     const sql = "SELECT idUsuario, nomeUsuario, email, paisOrigem, fotoPerfil, objetivo, interesse, nivelProficiencia, pontuacaoTotal FROM Usuarios WHERE idUsuario = ?";
@@ -72,29 +72,28 @@ router.get('/profile', authMiddleware, (req, res) => {
     });
 })
 
-// ROTA DO PERFIL (PUT) - ONBOARDING E EDIÇÃO
+// ROTA DO PERFIL (PUT)
 
 router.put('/profile', authMiddleware, async (req, res) => {
     const userId = req.user.id;
-    // Agora aceita nomeUsuario, senha e fotoPerfil
     const { nomeUsuario, senha, fotoPerfil } = req.body;
 
-    if (!nomeUsuario && !senha && !fotoPerfil) {
+    if(!nomeUsuario && !senha && !fotoPerfil){
         return res.status(400).json({ message: "Nenhum dado para atualizar foi fornecido." });
     }
 
     let fields = [];
     const params = [];
 
-    if (nomeUsuario) {
+    if(nomeUsuario){
         fields.push('nomeUsuario = ?');
         params.push(nomeUsuario);
     }
-    if (fotoPerfil) {
+    if(fotoPerfil){
         fields.push('fotoPerfil = ?');
         params.push(fotoPerfil);
     }
-    if (senha) {
+    if(senha){
         const salt = await bcrypt.genSalt(10);
         const senhaHash = await bcrypt.hash(senha, salt);
         fields.push('senha = ?');

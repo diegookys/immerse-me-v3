@@ -4,8 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './LessonMapPage.css';
 
-function LessonMapPage() {
-    // CORREÇÃO: Usa 'languageId' para corresponder à rota definida no App.js
+function LessonMapPage(){
     const { languageId } = useParams();
     const navigate = useNavigate();
     const [lessons, setLessons] = useState([]);
@@ -16,12 +15,11 @@ function LessonMapPage() {
             setLoading(true);
             const token = localStorage.getItem('token');
             const headers = { 'Content-Type': 'application/json' };
-            if (token) {
+            if(token){
                 headers['x-auth-token'] = token;
             }
 
-            try {
-                // CORREÇÃO: Usa a variável 'languageId' para construir a URL da API
+            try{
                 const response = await fetch(`http://localhost:3001/api/lessons/${languageId}`, { headers });
                 
                 if (response.ok) {
@@ -38,7 +36,7 @@ function LessonMapPage() {
             }
         };
         fetchLessons();
-    }, [languageId]); // Dependência da busca agora é 'languageId'
+    }, [languageId]);
 
     if (loading) {
         return (
@@ -50,7 +48,7 @@ function LessonMapPage() {
 
     return (
         <div className="lesson-map-container">
-            {/* O título agora capitaliza o ID do idioma para exibição */}
+            {/* puxa o id do idioma e mostra */}
             <h2>Lições de {languageId.charAt(0).toUpperCase() + languageId.slice(1)}</h2>
             <div className="lessons-list">
                 {lessons.length > 0 ? (

@@ -17,7 +17,6 @@
     text-align: center;
 }
 
-/* ... (as outras regras de .profile-picture, .total-score, etc. continuam iguais) ... */
 .profile-picture {
     width: 120px;
     height: 120px;
@@ -51,7 +50,6 @@
     color: white;
 }
 
-/* MUDANÇA 3: Diminuindo o tamanho dos botões */
 .start-learning-button, .logout-button {
     padding: 18px;
     border: none;
@@ -60,7 +58,6 @@
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
-    /* Adicionamos max-width e margin auto para centralizar e diminuir */
     width: auto;
     max-width: 400px;
     align-self: center;
@@ -82,8 +79,6 @@
     opacity: 0.8;
 }
 
-
-/* --- Estilos para as Seções Restauradas --- */
 .info-card h3 {
     text-align: left;
     margin-bottom: 1.5rem;
@@ -98,7 +93,6 @@
     padding: 0.5rem 0;
 }
 
-/* MUDANÇA 2: Nova regra para estilizar os botões "Gerenciar" e "Visualizar" */
 .settings-button {
     background: var(--primary-purple);
     color: white;
@@ -113,7 +107,6 @@
     background-color: var(--button-hover);
 }
 
-/* ... (as regras para .rewards-grid e .reward-item continuam as mesmas) ... */
 .rewards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));

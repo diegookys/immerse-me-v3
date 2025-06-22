@@ -1,19 +1,16 @@
 // frontend/src/components/ImageChoiceGame.js
 
-import React, { useState, useEffect } from 'react'; // 1. Adicionamos o useEffect
+import React, { useState, useEffect } from 'react';
 import './ImageChoiceGame.css';
 
 function ImageChoiceGame({ questionData, onComplete }) {
     const [selectedOption, setSelectedOption] = useState(null);
     const [isCorrect, setIsCorrect] = useState(null);
 
-    // 2. Este é o coração da correção.
-    // O useEffect será executado toda vez que a 'questionData' mudar (ou seja, a cada nova pergunta).
     useEffect(() => {
-        // Ele reinicia o estado do componente para uma nova pergunta.
         setSelectedOption(null);
         setIsCorrect(null);
-    }, [questionData]); // A dependência [questionData] garante que isso aconteça a cada nova pergunta.
+    }, [questionData]);
 
 
     const handleOptionClick = (option) => {

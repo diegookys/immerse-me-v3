@@ -1,4 +1,4 @@
-// backend/seed.js (Versão Final com Conteúdo Expandido)
+// backend/seed.js
 
 const db = require('./database.js');
 
@@ -48,7 +48,7 @@ const perguntas = [
     { idLicao: 6, tipoPergunta: 'imagem_texto', dadosPergunta: JSON.stringify({ imagem: "credit-card.png", legenda: "What is this?", opcoes: ["Passport", "Ticket", "Credit Card"], respostaCorreta: "Credit Card" })},
     { idLicao: 6, tipoPergunta: 'imagem_texto', dadosPergunta: JSON.stringify({ imagem: "wallet.png", legenda: "What is this?", opcoes: ["Wallet", "Suitcase", "Money"], respostaCorreta: "Wallet" })},
     
-    // ... e assim por diante para Coreano e Chinês...
+
     // Lição 7: Coreano - Animais
     { idLicao: 7, tipoPergunta: 'imagem_texto', dadosPergunta: JSON.stringify({ imagem: "cat.png", legenda: "이 동물은 무엇입니까?", opcoes: ["고양이 (goyangi)", "개 (gae)", "새 (sae)"], respostaCorreta: "고양이 (goyangi)" })},
     { idLicao: 7, tipoPergunta: 'imagem_texto', dadosPergunta: JSON.stringify({ imagem: "dog.png", legenda: "이 동물은 무엇입니까?", opcoes: ["물고기 (mulgogi)", "개 (gae)", "곰 (gom)"], respostaCorreta: "개 (gae)" })},
@@ -58,18 +58,18 @@ const perguntas = [
     { idLicao: 8, tipoPergunta: 'preencher_lacuna', dadosPergunta: JSON.stringify({ frase: ["이", null, "는 맛있어요."], opcoes: ["김치 (kimchi)", "나무 (namu)", "여권 (yeogwon)"], respostaCorreta: "김치 (kimchi)" })},
     { idLicao: 8, tipoPergunta: 'preencher_lacuna', dadosPergunta: JSON.stringify({ frase: ["저는", null, "를 좋아해요."], opcoes: ["스시 (seusi)", "지갑 (jigab)", "차 (cha)"], respostaCorreta: "스시 (seusi)" })},
     
-    // Lição 10: Chinês - Animais
+    // Lição 10: Chines - Animais
     { idLicao: 10, tipoPergunta: 'imagem_texto', dadosPergunta: JSON.stringify({ imagem: "tiger.png", legenda: "这是什么动物？", opcoes: ["老虎 (lǎohǔ)", "狮子 (shīzi)", "大象 (dàxiàng)"], respostaCorreta: "老虎 (lǎohǔ)" })},
     { idLicao: 10, tipoPergunta: 'imagem_texto', dadosPergunta: JSON.stringify({ imagem: "lion.png", legenda: "这是什么动物？", opcoes: ["熊 (xióng)", "狮子 (shīzi)", "马 (mǎ)"], respostaCorreta: "狮子 (shīzi)" })},
     { idLicao: 10, tipoPergunta: 'imagem_texto', dadosPergunta: JSON.stringify({ imagem: "fish.png", legenda: "这是什么动物？", opcoes: ["鱼 (yú)", "鸟 (niǎo)", "猫 (māo)"], respostaCorreta: "鱼 (yú)" })},
-    // Lição 11: Chinês - Comidas
+    // Lição 11: Chines - Comidas
     { idLicao: 11, tipoPergunta: 'preencher_lacuna', dadosPergunta: JSON.stringify({ frase: ["我想吃", null, "。"], opcoes: ["米饭 (mǐfàn)", "房子 (fángzi)", "护照 (hùzhào)"], respostaCorreta: "米饭 (mǐfàn)" })},
     { idLicao: 11, tipoPergunta: 'preencher_lacuna', dadosPergunta: JSON.stringify({ frase: ["这个", null, "很好吃。"], opcoes: ["天妇罗 (tiānfùluó)", "钱包 (qiánbāo)", "行李箱 (xínglixiāng)"], respostaCorreta: "天妇罗 (tiānfùluó)" })},
     { idLicao: 11, tipoPergunta: 'preencher_lacuna', dadosPergunta: JSON.stringify({ frase: ["我喜欢", null, "面。"], opcoes: ["拉 (lā)", "信用卡 (xìnyòngkǎ)", "票 (piào)"], respostaCorreta: "拉 (lā)" })},
 ];
 
 
-// --- LÓGICA PARA RECRIAR E POPULAR O BANCO DE DADOS ---
+
 db.serialize(() => {
     console.log('Iniciando a recriação do banco de dados...');
     db.run('BEGIN TRANSACTION;');
