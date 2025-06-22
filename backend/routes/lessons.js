@@ -5,7 +5,6 @@ const router = express.Router();
 const db = require('../database.js');
 const authMiddleware = require('../middleware/auth.js');
 const jwt = require('jsonwebtoken');
-
 const JWT_SECRET = 'seu_segredo_super_secreto_para_jwt';
 
 const languageMap = {
@@ -13,47 +12,41 @@ const languageMap = {
     'chines': 'Chinês', 'coreano': 'Coreano'
 };
 
+const getPublicLessons = (languageName, res) => {
+    // CORREÇÃO: Esta consulta agora marca TODAS as lições como 'disponivel'
+    const sql = `SELECT idLicao, nome, ordem, 'disponivel' as status FROM Licoes WHERE idioma LIKE ? ORDER BY ordem`;
+    db.all(sql, [languageName], (err, rows) => {
+        if (err) return res.status(500).json({ message: "Erro no servidor" });
+        res.json(rows);
+    });
+};
+
+// Rota para listar lições (sem alterações, já está correta)
 router.get('/:languageId', (req, res) => {
     const { languageId } = req.params;
     const languageName = languageMap[languageId.toLowerCase()];
     if (!languageName) return res.status(404).json({ message: "Idioma não encontrado." });
     
-    console.log(`Buscando lições para: ${languageName}`);
     const token = req.header('x-auth-token');
 
-    if (token) {
-        // Lógica para usuário logado (continua a mesma)
-        try {
-            const decoded = jwt.verify(token, JWT_SECRET);
-            const userId = decoded.user.id;
-            const sql = `SELECT idLicao, nome, ordem, 'disponivel' as status FROM Licoes WHERE idioma LIKE ? ORDER BY ordem`;
-            db.all(sql, [languageName], (err, rows) => {
-                if(err)return res.status(500).json({ message: "Erro no servidor" });
-                res.json(rows);
-            });
-        } catch (err) {
-            return res.status(401).json({ message: "Token inválido" });
-        }
-    } else {
-        // LÓGICA CORRIGIDA PARA VISITANTES
-        const sql = `SELECT idLicao, nome, ordem FROM Licoes WHERE idioma LIKE ? ORDER BY ordem`;
-        db.all(sql, [languageName], (err, rows) => {
-            if (err) return res.status(500).json({ message: "Erro no servidor" });
-            
-            // Marca a primeira lição como disponível e o resto como bloqueado
-            const lessonsWithStatus = rows.map(lesson => ({
-                ...lesson,
-                status: lesson.ordem === 1 ? 'disponivel' : 'bloqueado'
-            }));
-            res.json(lessonsWithStatus);
-        });
+    if (!token) {
+        return getPublicLessons(languageName, res);
+    }
+    
+    try {
+        jwt.verify(token, JWT_SECRET);
+        // Se o token for válido, usa a mesma lógica de desbloqueio para todos
+        return getPublicLessons(languageName, res);
+    } catch (err) {
+        // Se o token for inválido, também trata como visitante
+        return getPublicLessons(languageName, res);
     }
 });
 
-// ... (o restante do arquivo continua o mesmo)
-router.get('/questions/:lessonId', authMiddleware, (req, res) => {
+// ROTA PARA BUSCAR AS PERGUNTAS DE UMA LIÇÃO ESPECÍFICA - AGORA É PÚBLICA
+router.get('/questions/:lessonId', (req, res) => {
     const { lessonId } = req.params;
-    if (!lessonId || lessonId === 'undefined') {
+    if (!lessonId || isNaN(lessonId)) {
         return res.status(400).json({ message: "ID da lição é inválido." });
     }
     const sql = "SELECT idPergunta, tipoPergunta, dadosPergunta FROM Perguntas WHERE idLicao = ?";

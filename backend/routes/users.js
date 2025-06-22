@@ -9,14 +9,13 @@ const authMiddleware = require('../middleware/auth.js');
 
 const JWT_SECRET = 'seu_segredo_super_secreto_para_jwt';
 
-// ROTA DE CADASTRO (LÓGICA DE DESBLOQUEIO ADICIONADA)
+// ROTA DE CADASTRO (COM DESBLOQUEIO)
 router.post('/register', async (req, res) => {
     try {
         const { nomeUsuario, email, senha } = req.body;
         if (!nomeUsuario || !email || !senha) {
             return res.status(400).json({ message: "Por favor, preencha todos os campos." });
         }
-
         const sqlCheck = "SELECT * FROM Usuarios WHERE email = ?";
         db.get(sqlCheck, [email], async (err, row) => {
             if (row) return res.status(400).json({ message: "Este e-mail já está em uso." });
@@ -25,26 +24,18 @@ router.post('/register', async (req, res) => {
             const senhaHash = await bcrypt.hash(senha, salt);
             const sqlInsert = 'INSERT INTO Usuarios (nomeUsuario, email, senha) VALUES (?,?,?)';
 
-            // Usamos uma função para ter acesso ao ID do novo usuário
             db.run(sqlInsert, [nomeUsuario, email, senhaHash], function(err) {
                 if (err) return res.status(500).json({ message: "Erro ao cadastrar usuário." });
-                
                 const newUserId = this.lastID;
-
-                // --- NOVA LÓGICA DE DESBLOQUEIO ---
-                // Após o usuário ser criado, desbloqueamos a primeira lição de cada idioma.
+                
+                // Desbloqueia a primeira lição de cada idioma para o novo usuário
                 const sqlFindLessons = "SELECT idLicao FROM Licoes WHERE ordem = 1";
                 db.all(sqlFindLessons, [], (err, firstLessons) => {
                     if (err) return console.error("Erro ao buscar primeiras lições:", err);
-
                     const stmtUnlock = db.prepare("INSERT INTO ProgressoUsuario (idUsuario, idLicao, status) VALUES (?, ?, 'disponivel')");
-                    firstLessons.forEach(lesson => {
-                        stmtUnlock.run(newUserId, lesson.idLicao);
-                    });
+                    firstLessons.forEach(lesson => stmtUnlock.run(newUserId, lesson.idLicao));
                     stmtUnlock.finalize();
                 });
-                // --- FIM DA NOVA LÓGICA ---
-
                 res.status(201).json({ message: "Usuário cadastrado com sucesso!", userId: newUserId });
             });
         });
@@ -53,9 +44,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-
-// ... (O restante do arquivo: /login, /profile, etc., continua o mesmo)
-// ROTA DE LOGIN (POST /api/users/login)
+// ROTA DE LOGIN
 router.post('/login', (req, res) => {
     const { email, senha } = req.body;
     if (!email || !senha) return res.status(400).json({ message: "Por favor, preencha todos os campos." });
@@ -72,34 +61,55 @@ router.post('/login', (req, res) => {
     });
 });
 
-// ROTA DE PERFIL (GET /api/users/profile) - ROTA PROTEGIDA
+// ROTA DE PERFIL (GET) - Garante que a pontuação seja retornada
 router.get('/profile', authMiddleware, (req, res) => {
     const userId = req.user.id;
-    const sql = "SELECT idUsuario, nomeUsuario, email, paisOrigem, fotoPerfil, objetivo, interesse, nivelProficiencia FROM Usuarios WHERE idUsuario = ?";
+    const sql = "SELECT idUsuario, nomeUsuario, email, paisOrigem, fotoPerfil, objetivo, interesse, nivelProficiencia, pontuacaoTotal FROM Usuarios WHERE idUsuario = ?";
     db.get(sql, [userId], (err, user) => {
         if (err) return res.status(500).json({ message: "Erro no servidor" });
         if (!user) return res.status(404).json({ message: "Usuário não encontrado." });
         res.json(user);
     });
-});
+})
 
-// ROTA PARA ATUALIZAR O PERFIL (ONBOARDING E EDIÇÃO) - ROTA PROTEGIDA
-router.put('/profile', authMiddleware, (req, res) => {
+// ROTA DO PERFIL (PUT) - ONBOARDING E EDIÇÃO
+
+router.put('/profile', authMiddleware, async (req, res) => {
     const userId = req.user.id;
-    const { objetivo, interesse, nivelProficiencia } = req.body;
-    const fields = [];
+    // Agora aceita nomeUsuario, senha e fotoPerfil
+    const { nomeUsuario, senha, fotoPerfil } = req.body;
+
+    if (!nomeUsuario && !senha && !fotoPerfil) {
+        return res.status(400).json({ message: "Nenhum dado para atualizar foi fornecido." });
+    }
+
+    let fields = [];
     const params = [];
-    if (objetivo) { fields.push("objetivo = ?"); params.push(objetivo); }
-    if (interesse) { fields.push("interesse = ?"); params.push(interesse); }
-    if (nivelProficiencia) { fields.push("nivelProficiencia = ?"); params.push(nivelProficiencia); }
-    if (fields.length === 0) return res.status(400).json({ message: "Nenhum campo para atualizar foi fornecido." });
+
+    if (nomeUsuario) {
+        fields.push('nomeUsuario = ?');
+        params.push(nomeUsuario);
+    }
+    if (fotoPerfil) {
+        fields.push('fotoPerfil = ?');
+        params.push(fotoPerfil);
+    }
+    if (senha) {
+        const salt = await bcrypt.genSalt(10);
+        const senhaHash = await bcrypt.hash(senha, salt);
+        fields.push('senha = ?');
+        params.push(senhaHash);
+    }
+    
+    const sql = `UPDATE Usuarios SET ${fields.join(', ')} WHERE idUsuario = ?`;
     params.push(userId);
-    const sql = `UPDATE Usuarios SET ${fields.join(", ")} WHERE idUsuario = ?`;
+    
     db.run(sql, params, function(err) {
-        if (err) return res.status(500).json({ message: "Erro ao atualizar perfil" });
+        if (err) {
+            return res.status(500).json({ message: "Erro ao atualizar perfil.", error: err.message });
+        }
         res.json({ message: "Perfil atualizado com sucesso!" });
     });
 });
-
 
 module.exports = router;

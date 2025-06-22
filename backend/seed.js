@@ -73,14 +73,51 @@ const perguntas = [
 db.serialize(() => {
     console.log('Iniciando a recriação do banco de dados...');
     db.run('BEGIN TRANSACTION;');
+
     const tablesToDrop = ['ProgressoUsuario', 'Perguntas', 'Licoes', 'Usuarios'];
-    tablesToDrop.forEach(table => db.run(`DROP TABLE IF EXISTS ${table}`));
+    tablesToDrop.forEach(table => {
+        db.run(`DROP TABLE IF EXISTS ${table}`);
+    });
+    
     console.log('Tabelas antigas apagadas.');
     const schema = `
-        CREATE TABLE Usuarios (idUsuario INTEGER PRIMARY KEY, nomeUsuario TEXT, email TEXT UNIQUE, senha TEXT, paisOrigem TEXT, fotoPerfil TEXT, objetivo TEXT, interesse TEXT, nivelProficiencia TEXT);
-        CREATE TABLE Licoes (idLicao INTEGER PRIMARY KEY, idioma TEXT NOT NULL, nome TEXT NOT NULL, ordem INTEGER, tipo TEXT, categoria TEXT);
-        CREATE TABLE Perguntas (idPergunta INTEGER PRIMARY KEY, idLicao INTEGER, tipoPergunta TEXT, dadosPergunta TEXT, FOREIGN KEY (idLicao) REFERENCES Licoes (idLicao) ON DELETE CASCADE);
-        CREATE TABLE ProgressoUsuario (idProgresso INTEGER PRIMARY KEY, idUsuario INTEGER, idLicao INTEGER, status TEXT, pontuacao INTEGER, FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario) ON DELETE CASCADE, FOREIGN KEY (idLicao) REFERENCES Licoes(idLicao) ON DELETE CASCADE, UNIQUE(idUsuario, idLicao));
+        CREATE TABLE Usuarios(
+        idUsuario INTEGER PRIMARY KEY,
+        nivel VARCHAR(50) DEFAULT 'Novato',
+        nomeUsuario TEXT,
+        email TEXT UNIQUE,
+        senha TEXT,
+        paisOrigem TEXT,
+        fotoPerfil TEXT,
+        objetivo TEXT,
+        interesse TEXT,
+        nivelProficiencia TEXT,
+        pontuacaoTotal INTEGER DEFAULT 0
+        );
+        CREATE TABLE Licoes(
+        idLicao INTEGER PRIMARY KEY,
+        idioma TEXT NOT NULL,
+        nome TEXT NOT NULL,
+        ordem INTEGER,
+        tipo TEXT,
+        categoria TEXT
+        );
+        CREATE TABLE Perguntas(idPergunta INTEGER PRIMARY KEY,
+        idLicao INTEGER,
+        tipoPergunta TEXT,
+        dadosPergunta TEXT,
+        FOREIGN KEY (idLicao) REFERENCES Licoes (idLicao) ON DELETE CASCADE
+        );
+        CREATE TABLE ProgressoUsuario(
+        idProgresso INTEGER PRIMARY KEY,
+        idUsuario INTEGER,
+        idLicao INTEGER,
+        status TEXT,
+        pontuacao INTEGER,
+        FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario) ON DELETE CASCADE,
+        FOREIGN KEY (idLicao) REFERENCES Licoes(idLicao) ON DELETE CASCADE,
+        UNIQUE(idUsuario, idLicao)
+        );
     `;
     db.exec(schema, (err) => {
         if (err) {
@@ -88,15 +125,15 @@ db.serialize(() => {
             db.run('ROLLBACK');
             return;
         }
-        console.log('Tabelas recriadas. Populando com dados...');
+
         const stmtLicoes = db.prepare("INSERT INTO Licoes (idioma, nome, ordem, tipo, categoria) VALUES (?, ?, ?, ?, ?)");
         licoes.forEach(licao => stmtLicoes.run(licao.idioma, licao.nome, licao.ordem, licao.tipo, licao.categoria));
         stmtLicoes.finalize();
-        console.log('Tabela Licoes populada.');
+
         const stmtPerguntas = db.prepare("INSERT INTO Perguntas (idLicao, tipoPergunta, dadosPergunta) VALUES (?, ?, ?)");
         perguntas.forEach(pergunta => stmtPerguntas.run(pergunta.idLicao, pergunta.tipoPergunta, pergunta.dadosPergunta));
         stmtPerguntas.finalize();
-        console.log('Tabela Perguntas populada.');
+        
         db.run('COMMIT;', (err) => {
             if (err) console.error("Erro ao finalizar transação:", err.message);
             else console.log('Banco de dados recriado e populado com sucesso!');
