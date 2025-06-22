@@ -43,7 +43,7 @@ router.get('/:languageId', (req, res) => {
     }
 });
 
-// ROTA PARA BUSCAR AS PERGUNTAS DE UMA LIÇÃO ESPECÍFICA - AGORA É PÚBLICA
+// ROTA PARA BUSCAR AS PERGUNTAS DE UMA ATIVIDADE ESPECIFICA
 router.get('/questions/:lessonId', (req, res) => {
     const { lessonId } = req.params;
     if (!lessonId || isNaN(lessonId)) {

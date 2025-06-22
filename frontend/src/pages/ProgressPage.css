@@ -1,0 +1,63 @@
+/* frontend/src/pages/ProgressPage.css */
+
+.progress-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    text-align: center;
+}
+.progress-container h1 {
+    font-size: 2.8rem;
+    color: var(--dark-text);
+    margin-bottom: 2rem;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+.stat-card {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.stat-card h2 {
+    font-size: 3rem;
+    color: var(--primary-purple);
+    margin: 0;
+}
+.stat-card p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+.chart-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    max-width: 500px;
+    margin: 0 auto;
+}
+.chart-container h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+.back-button {
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--primary-purple);
+    background: none;
+    border: 2px solid var(--primary-purple);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.back-button:hover {
+    background-color: var(--primary-purple);
+    color: white;
+}

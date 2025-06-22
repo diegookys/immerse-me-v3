@@ -1,0 +1,58 @@
+/* frontend/src/pages/LanguageSelectionPage.css */
+
+.language-selection-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    max-width: 900px;
+    margin: 4rem auto;
+}
+
+.language-selection-container h2 {
+    font-size: 2.5rem;
+    color: var(--dark-text);
+    margin-bottom: 3rem;
+}
+
+.language-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.language-card {
+    background-color: #fff;
+    border: 2px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.language-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-purple);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.language-card img {
+    width: 100px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.language-card span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--dark-text);
+}

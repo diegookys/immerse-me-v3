@@ -1,0 +1,52 @@
+/* frontend/src/pages/LessonResultsPage.css */
+
+.results-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(180deg, var(--primary-purple) 0%, #c471ed 100%);
+    color: white;
+    text-align: center;
+}
+
+.results-card {
+    padding: 3rem;
+}
+
+.results-card h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.results-card p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.score-display {
+    font-size: 6rem;
+    font-weight: bold;
+    margin: 1rem 0;
+    line-height: 1;
+}
+
+.results-button {
+    margin-top: 2rem;
+    padding: 1rem 3rem;
+    border-radius: 12px;
+    border: none;
+    background-color: white;
+    color: var(--primary-purple);
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.results-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}

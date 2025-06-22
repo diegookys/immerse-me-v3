@@ -1,0 +1,59 @@
+/* frontend/src/components/FillInTheBlankGame.css */
+.fill-blank-container {
+    padding: 2rem;
+}
+
+.sentence-box {
+    background-color: #fff;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    padding: 2rem;
+    font-size: 1.8rem;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px solid var(--dark-text);
+    padding: 0 0.5rem;
+    color: var(--primary-purple);
+    font-weight: bold;
+}
+
+.blank.correct {
+    color: var(--correct-green);
+    border-bottom-color: var(--correct-green);
+}
+.blank.incorrect {
+    color: var(--incorrect-red);
+    border-bottom-color: var(--incorrect-red);
+}
+
+.word-bank {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.word-option {
+    padding: 1rem 1.5rem;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    background-color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.word-option:hover:not(:disabled) {
+    border-color: var(--primary-purple);
+    color: var(--primary-purple);
+}
+
+.word-option:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

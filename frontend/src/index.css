@@ -1,0 +1,16 @@
+/* frontend/src/index.css */
+:root {
+  --primary-purple: #8338ec; /* Roxo vibrante */
+  --light-yellow: #fffbeB;    /* Fundo branco amarelado */
+  --dark-text: #333;
+  --light-text: #fff;
+  --correct-green: #58cc02;
+  --incorrect-red: #ff4b4b;
+  --button-hover: #9d4edd;
+}
+
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', sans-serif;
+  background-color: var(--light-yellow);
+}

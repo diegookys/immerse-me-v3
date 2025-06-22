@@ -1,0 +1,63 @@
+/* frontend/src/components/ImageChoiceGame.css */
+
+.game-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.game-container h3 {
+    font-size: 1.8rem;
+    color: var(--dark-text);
+    margin-bottom: 2rem;
+}
+
+.game-image {
+    max-width: 100%;
+    height: 250px;
+    object-fit: contain;
+    margin-bottom: 2rem;
+    border-radius: 16px;
+}
+
+.options-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.option-button {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 12px;
+    border: 2px solid #ddd;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.option-button:hover:not(:disabled) {
+    border-color: var(--primary-purple);
+}
+
+.option-button.default {
+    background-color: #fff;
+    border-color: #ddd;
+}
+.option-button.correct {
+    background-color: var(--correct-green);
+    color: white;
+    border-color: var(--correct-green);
+}
+.option-button.incorrect {
+    background-color: var(--incorrect-red);
+    color: white;
+    border-color: var(--incorrect-red);
+}
+
+.option-button:disabled {
+    cursor: not-allowed;
+}
